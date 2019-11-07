@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="37b716c6-fce7-4ff1-afc0-ace2c6cb12c1" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="cicd-demoFlow" doc:id="4eb8edb7-7860-494a-9c30-bc8a927709f1" >
+		<http:listener doc:name="Listener" doc:id="baaf4d30-1f21-447b-be60-a378d0ec2081" config-ref="HTTP_Listener_config" path="/getData"/>
+		<set-variable value="Maruthi" doc:name="Set Variable" doc:id="5486a59c-7467-44e5-aa2b-4979f918abaf" variableName="str"/>
+		<set-variable value="CI" doc:name="Set Variable" doc:id="1daa97e2-988e-4bf2-a438-8983e90beab4" variableName="x"/>
+		<set-variable value="CD" doc:name="Set Variable" doc:id="6a962608-e383-453b-be98-d31cc3ed43de" variableName="y"/>
+		<set-variable value="CM" doc:name="Set Variable" doc:id="a88a5f81-08bd-469c-a666-e9d439032b4e" variableName="z"/>
+		<set-variable value="DevOps" doc:name="Set Variable" doc:id="b2e8908d-2216-49b6-b55c-a113ce8d2496" variableName="p"/>
+		<set-payload value="### CI/CD Demo V2.0 ###" doc:name="Set Payload" doc:id="47dd8b72-7bdb-427f-bf7f-06486d17ff3e" />
+		<logger level="INFO" doc:name="Logger" doc:id="feef2044-e9b6-4150-93c4-18f495ddef5f" message="#[payload]"/>
+	</flow>
+</mule>
