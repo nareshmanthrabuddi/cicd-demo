@@ -13,7 +13,7 @@ pipeline {
 	stages {
 	    stage('Pipeline gets Started') {		
 			steps {
-			   echo 'Maruthi Project CI/CD Pipeline Started'
+			   echo 'Demo Project CI/CD Pipeline Started'
 			}
 	    }
 	}
@@ -39,7 +39,7 @@ node {
 	properties([
      parameters([
        choiceParam(
-         choices: 'DEVELOPMENT\nSIT\nUAT\nPRODUCTION',
+         choices: 'DEVELOPMENT\nSIT\nUAT\nPROD',
             description: 'Please select the ENVIRONMENT for Deployment',
             name: 'ENVIRONMENT'
        ),
@@ -75,7 +75,7 @@ node {
        ),
        string(
 		   name: 'ANYPOINT_ORGANIZATION', 
-		   defaultValue: 'LnD', 
+		   defaultValue: 'DevOps', 
 		   description: 'Please provide CloudHub Anypoint Organization name to deploy?'
 	   ),
 	   choiceParam(
