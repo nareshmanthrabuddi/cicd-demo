@@ -220,13 +220,13 @@ def UDF_ArtifactUploadToNexus()
 		nexusArtifactUploader(
 			nexusVersion: 'nexus3',
 			protocol: http,
-			nexusUrl: localhost:8081,
-			groupId: cicd-demo,
-			version: 1.0,
-			repository: maven-releases,
+			nexusUrl: 'localhost:8081',
+			groupId: 'cicd-demo',
+			version: '1.0',
+			repository: 'maven-releases',
 			credentialsId: '40860708-f898-4290-bf94-1b26ace6d908',
 			artifacts: [
-				[artifactId: cicd-demo,
+				[artifactId: 'cicd-demo',
 				 classifier: 'debug',
 				 file: targetZipName,
 				 type: 'jar']
