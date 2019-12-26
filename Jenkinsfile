@@ -185,38 +185,12 @@ def UDF_ArtifactUploadToNexus()
 
 	try{
 		echo "Artifact Copy to Nexus Started"
-		nexus_Protocol = "http"
-		nexus_BaseURL = "${env.LOCAL_NEXUS_BASEURL}"		
-		nexus_RepoName = UDF_Get_Nexus_RepoName("${params.ENVIRONMENTS}")		
-		pom_GroupID = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","groupId")
-		pom_ArtifactId = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","artifactId")
-		pom_Version = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","version")
-		pom_Packaging = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","packaging")
-		//def nexus_SearchURL = "${nexus_BaseURL}/service/rest/beta/search?repository=${nexus_RepoName}&group=${pom_GroupID}&name=${pom_ArtifactId}"	
-		downloadDir = "${env.JENKINS_HOME}\\CloudHub\\Downloads\\"+UDF_GetGitRepoName()	
+		pom_GroupID = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","groupId")	
+		v_artifactId = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","artifactId")
+		v_version = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","version")
+		v_package = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","packaging")
+		String v_downloadFilePath = "${env.WORKSPACE}\\target\\${v_artifactId}-${v_version}-${v_package}.jar"	
 		
-		echo "###### NEXUS REPO DETAILS ######"
-		echo "Nexus base URL: ${env.LOCAL_NEXUS_BASEURL}"	
-		echo "nexus_RepoName: ${params.ENVIRONMENTS}"
-		echo "pom_GroupID: ${pom_GroupID}"
-		echo "pom_ArtifactId is : ${pom_ArtifactId}"
-		echo "pom_Version is : ${pom_Version}"
-		echo "pom_Packaging is : ${pom_Packaging}"
-		echo "downloadDir is : ${downloadDir}"
-	
-		String nexusRepoName = "${nexus_RepoName}/"
-		String targetZipName = "target/${pom_ArtifactId}-${pom_Version}-mule-application.jar"
-
-		echo "nexusRepoName is : ${nexusRepoName}"
-		echo "targetZipName is : ${targetZipName}"
-		
-		if(nexus_BaseURL.contains("http://")) {
-			nexus_BaseURL = nexus_BaseURL.substring(7)
-		} else if(nexus_BaseURL.contains("https://")) {
-			nexus_BaseURL = nexus_BaseURL.substring(8)
-		}
-		echo "nexus_BaseURL after substring is : ${nexus_BaseURL}"
-
 		nexusArtifactUploader(
 			nexusVersion: 'nexus3',
 			protocol: http,
@@ -228,7 +202,7 @@ def UDF_ArtifactUploadToNexus()
 			artifacts: [
 				[artifactId: 'cicd-demo',
 				 classifier: 'debug',
-				 file: targetZipName,
+				 file: v_downloadFilePath,
 				 type: 'jar']
 			]
 		 )
