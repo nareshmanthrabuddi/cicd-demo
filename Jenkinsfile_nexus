@@ -64,7 +64,7 @@ node {
             name: 'WORKERTYPE'
        ),
        choiceParam(
-         choices: 'us-east-2(US East, Ohio)\nus-east-1(default; US East, N. Virginia)\nus-west-1(US West, N. California)\nus-west-2(US West, Oregon)\neu-central-1(EU, Frankfurt)\neu-west-1(EU, Ireland)\neu-west-2(EU, London)\nap-southeast-1(Asia Pacific, Singapore)\nap-southeast-2(Asia Pacific, Sydney)\nap-northeast-1(Asia Pacific, Tokyo)\nca-central-1(Canada, Central)\nsa-east-1 (South America, São Paulo)',
+         choices: 'us-east-1(default; US East, N. Virginia)\nus-east-2(US East, Ohio)\nus-west-1(US West, N. California)\nus-west-2(US West, Oregon)\neu-central-1(EU, Frankfurt)\neu-west-1(EU, Ireland)\neu-west-2(EU, London)\nap-southeast-1(Asia Pacific, Singapore)\nap-southeast-2(Asia Pacific, Sydney)\nap-northeast-1(Asia Pacific, Tokyo)\nca-central-1(Canada, Central)\nsa-east-1 (South America, São Paulo)',
             description: 'Please select the Region for Deployment, By default this value is us-east-1?',
             name: 'REGION'
 		),         
