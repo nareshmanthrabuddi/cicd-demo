@@ -75,7 +75,7 @@ node {
 	   ),
        string(
 		   name: 'ANYPOINT_ORGANIZATION', 
-		   defaultValue: 'DevOps', 
+		   defaultValue: 'LnD', 
 		   description: 'Please provide CloudHub Anypoint Organization name to deploy?'
 	   )
      ])
