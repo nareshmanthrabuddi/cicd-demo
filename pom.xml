@@ -21,6 +21,7 @@
         <anypoint.businessGroup>${businessGroup}</anypoint.businessGroup>
         <environment>${env}</environment>
         <munit.version>2.1.4</munit.version>
+        <anypoint.businessGroupId>${businessGroupId}</anypoint.businessGroupId>
     </properties>
 
 	<build>
@@ -43,6 +44,7 @@
                         <workerType>${anypoint.workerType}</workerType>
                         <workers>${anypoint.workers}</workers>
                         <businessGroup>${anypoint.businessGroup}</businessGroup>
+                        <businessGroupId>${anypoint.businessGroupId}</businessGroupId>
 			            <properties>
 			                <env>${environment}</env>
 			            </properties>
