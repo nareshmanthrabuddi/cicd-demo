@@ -185,12 +185,23 @@ def UDF_ArtifactUploadToNexus()
 
 	try{
 		echo "Artifact Copy to Nexus Started"
+
 		pom_GroupID = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","groupId")	
 		v_artifactId = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","artifactId")
 		v_version = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","version")
 		v_package = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","packaging")
 		String v_downloadFilePath = "${env.WORKSPACE}\\target\\${v_artifactId}-${v_version}-${v_package}.jar"	
+		def buildNumber = "${env.BUILD_NUMBER}"
 		
+		echo "###### NEXUS REPO DETAILS ######"
+		echo "Nexus base URL: ${env.LOCAL_NEXUS_BASEURL}"	
+		echo "Build Number : ${env.BUILD_NUMBER}"	
+		echo "pom_GroupID: ${pom_GroupID}"
+		echo "pom_ArtifactId is : ${v_artifactId}"
+		echo "pom_Version is : ${v_version}"
+		echo "pom_Packaging is : ${v_package}"
+		echo "downloadDir is : ${v_downloadFilePath}"
+
 		nexusArtifactUploader(
 			nexusVersion: 'nexus3',
 			protocol: 'http',
@@ -200,7 +211,7 @@ def UDF_ArtifactUploadToNexus()
 			repository: 'maven-releases',
 			credentialsId: '40860708-f898-4290-bf94-1b26ace6d908',
 			artifacts: [
-				[artifactId: 'cicd-demo',
+				[artifactId: v_artifactId,
 				 classifier: 'debug',
 				 file: v_downloadFilePath,
 				 type: 'jar']
