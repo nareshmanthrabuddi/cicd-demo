@@ -186,36 +186,29 @@ def UDF_ArtifactUploadToNexus()
 	try{
 		echo "Artifact Copy to Nexus Started"
 
-		pom_GroupID = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","groupId")	
+		v_groupID = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","groupId")	
 		v_artifactId = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","artifactId")
 		v_version = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","version")
 		v_package = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","packaging")
 		String v_downloadFilePath = "${env.WORKSPACE}\\target\\${v_artifactId}-${v_version}-${v_package}.jar"	
 		def v_buildNumber = "${env.BUILD_NUMBER}"
 		v_nexusProtocol = "http"
-		v_nexusBaseURL = "${env.LOCAL_NEXUS_BASEURL}"
-
-		if(v_nexusBaseURL.contains("http://")) {
-			v_nexusBaseURL = v_nexusBaseURL.substring(7)
-		} else if(v_nexusBaseURL.contains("https://")) {
-			v_nexusBaseURL = v_nexusBaseURL.substring(8)
-		}		
-
+		v_nexusBaseURL = "localhost:8081"
+		v_nexusRelease = "nexus3"		
 		
 		echo "###### NEXUS REPO DETAILS ######"
-		echo "Nexus base URL: ${env.LOCAL_NEXUS_BASEURL}"	
-		echo "Build Number : ${env.BUILD_NUMBER}"	
-		echo "pom_GroupID: ${pom_GroupID}"
-		echo "pom_ArtifactId is : ${v_artifactId}"
-		echo "pom_Version is : ${v_version}"
-		echo "pom_Packaging is : ${v_package}"
+		echo "Build Number from pom  : ${v_buildNumber}"	
+		echo "GroupID from pom : ${v_groupID}"
+		echo "ArtifactId from pom  is : ${v_artifactId}"
+		echo "Version from pom is : ${v_version}"
+		echo "Packaging from pom is : ${v_package}"
 		echo "downloadDir is : ${v_downloadFilePath}"
 
 		nexusArtifactUploader(
 			nexusVersion: 'nexus3',
 			protocol: v_nexusProtocol,
 			nexusUrl: v_nexusBaseURL,
-			groupId: 'cicd-demo',
+			groupId: v_groupID,
 			version: v_buildNumber,
 			repository: 'maven-releases',
 			credentialsId: '40860708-f898-4290-bf94-1b26ace6d908',
