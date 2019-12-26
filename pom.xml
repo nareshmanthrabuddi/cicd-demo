@@ -20,6 +20,8 @@
         <anypoint.workers>${workers}</anypoint.workers>
         <anypoint.businessGroup>${businessGroup}</anypoint.businessGroup>
         <environment>${env}</environment>
+        <munit.version>2.1.4</munit.version>
+
     </properties>
 
 	<build>
