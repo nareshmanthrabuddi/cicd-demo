@@ -57,7 +57,7 @@ node {
             name: 'ENVIRONMENT'
        ),
        choiceParam(
-         choices: 'BUILD-MUNITS\nBUILD-MUNITS-SONAR\nBUILD-MUNITS-SONAR-RELEASE',
+         choices: 'BUILD-MUNITS\nBUILD-MUNITS-SONAR\nBUILD-MUNITS-SONAR-RELEASE\nBUILD-MUNITS-SONAR-RELEASE-DEPLOY',
             description: 'Please select the Build Mechanism',
             name: 'BUILD_MECHANISM'
        ),
@@ -113,17 +113,15 @@ node {
 					
 				stage 'SonarQube Analysis'
 					UDF_ExecuteSonarQubeRules()
-
-				stage 'ArtifactUploadToNexus'
-					UDF_ArtifactUploadToNexus()
-				
+			
 				stage 'Notification'
-					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","success")
+					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Success")
 
 			} catch(error) {
 				throw(error)
 				SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
 			}
+
 		} else if(params.BUILD_MECHANISM == 'BUILD-MUNITS-SONAR-RELEASE') {
 			try{
 				stage 'Code Build & MUnits Execution'	
@@ -132,11 +130,34 @@ node {
 				stage 'SonarQube Analysis'
 					UDF_ExecuteSonarQubeRules()
 
+				stage 'ArtifactUploadToNexus'
+					UDF_ArtifactUploadToNexus()
+
+				stage 'Notification'
+					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Success")	
+
+			} catch(error) {
+				throw(error)
+				SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
+			}
+
+		}  else if(params.BUILD_MECHANISM == 'BUILD-MUNITS-SONAR-RELEASE-DEPLOY') {
+			try{
+				stage 'Code Build & MUnits Execution'	
+					UDF_BuildSourceCode()
+					
+				stage 'SonarQube Analysis'
+					UDF_ExecuteSonarQubeRules()
+
+				stage 'ArtifactUploadToNexus'
+					UDF_ArtifactUploadToNexus()
+
 				stage 'DeployToCloudHub'
 					UDF_DeployToCloudHub()
 
 				stage 'Notification'
-					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")	
+					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Success")	
+
 			} catch(error) {
 				throw(error)
 				SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
