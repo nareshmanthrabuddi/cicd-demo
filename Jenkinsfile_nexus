@@ -329,11 +329,12 @@ def UDF_DeployToCloudHub() {
 	echo "Download File Path is : ${v_downloadFilePath}"
 	echo "ANYPOINT_CREDENTIAL_ID is : ${v_anypointCredentialID}"
 	echo "Region : ${v_region}"
+	//-DbusinessGroupId=5a1efa6d-e32c-440c-b3bb-978fc5ae507b
 
 	withCredentials([usernamePassword(credentialsId: "${v_anypointCredentialID}",passwordVariable: 'ANYPOINT_PASSWORD',usernameVariable: 'ANYPOINT_USERNAME')])
 	{
 
-		bat "mvn deploy -DmuleDeploy -DskipTests=true -Danypoint.username=${ANYPOINT_USERNAME} -Danypoint.password=${ANYPOINT_PASSWORD} -Denvironment=${v_anypointEnvironment} -DbusinessGroup=${v_anypointOrganization} -Dworkers=${v_workers} -Dcores=${v_workerType} -DmuleVersion=${v_muleRuntimeEnvironment} -DapplicationName=${v_applicationName} -DbusinessGroupId=5a1efa6d-e32c-440c-b3bb-978fc5ae507b"
+		bat "mvn deploy -DmuleDeploy -DskipTests=true -Danypoint.username=${ANYPOINT_USERNAME} -Danypoint.password=${ANYPOINT_PASSWORD} -Denvironment=${v_anypointEnvironment} -DbusinessGroup=${v_anypointOrganization} -Dworkers=${v_workers} -DworkerType=${v_workerType} -DmuleVersion=${v_muleRuntimeEnvironment} -DapplicationName=${v_applicationName}"
 	}
 }
 
