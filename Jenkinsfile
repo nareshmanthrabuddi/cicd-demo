@@ -35,19 +35,7 @@ node {
 	def v_version = ""
 	def v_package = ""
 	def v_downloadFilePath = ""
-
-	// nexus variables
-	def nexus_Protocol = ""
-	def nexus_BaseURL = ""		
-	def nexus_RepoName = ""		
-	def pom_GroupID = ""
-	def pom_ArtifactId = ""
-	def pom_Version = ""
-	def pom_Packaging = ""
-	def downloadDir = ""
-	def propertiesFilePath = ""
 	def downloadFilePath = ""
-
 
 	properties([
      parameters([
@@ -188,7 +176,7 @@ def UDF_ExecuteSonarQubeRules()
 {	
 	try{
 		echo 'SonarQube Rules Execution started'
-		//bat 'mvn sonar:sonar'
+		bat 'mvn sonar:sonar'
 		echo 'SonarQube Rules Execution Completed'	
 	} catch(error) {
 		throw(error)
@@ -224,7 +212,7 @@ def UDF_ArtifactUploadToNexus()
 		echo "ArtifactId from pom  is : ${v_artifactId}"
 		echo "Version from pom is : ${v_version}"
 		echo "Packaging from pom is : ${v_package}"
-		echo "downloadDir is : ${v_downloadFilePath}"
+		echo "download file path is : ${v_downloadFilePath}"
 
 		nexusArtifactUploader(
 			nexusVersion: v_nexusRelease,
