@@ -158,7 +158,7 @@ def UDF_ExecuteSonarQubeRules()
 		SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
 	}
 }
-   
+
 
 /*
 DEPLOY STAGE
@@ -193,27 +193,28 @@ def UDF_DeployToCloudHub() {
 	if("${params.ENVIRONMENT}" == 'development') {
 
 		v_anypointCredentialID = 'bccc9153-9fda-40b4-b266-70fbbb0176c8'
-		v_muleEnv = 'development'
 
 	} else if("${params.ENVIRONMENT}" == 'SIT') {
 
 		v_anypointCredentialID= 'bccc9153-9fda-40b4-b266-70fbbb0176c8'
-		v_muleEnv = 'quality'
 
 	} else if("${params.ENVIRONMENT}" == 'TEST') {
 
 		v_anypointCredentialID= 'bccc9153-9fda-40b4-b266-70fbbb0176c8'
-		v_muleEnv = 'test'
 
 	} else if("${params.ENVIRONMENT}" == 'PREPROD') {
 
 		v_anypointCredentialID= 'bccc9153-9fda-40b4-b266-70fbbb0176c8'
-		v_muleEnv = 'preprod'
+
+	} else if("${params.ENVIRONMENT}" == 'PROD') {
+
+		v_anypointCredentialID= 'bccc9153-9fda-40b4-b266-70fbbb0176c8'
 	}
 
 	/* 
 		Setting the WORKERS
 	*/
+
 	echo "Setting the WORKERS"
 
 	if("${params.WORKERS}" == '(default:1)') {
@@ -327,7 +328,6 @@ def UDF_DeployToCloudHub() {
 	echo "Environment Workspace is : ${env.WORKSPACE}"	
 	echo "Download File Path is : ${v_downloadFilePath}"
 	echo "ANYPOINT_CREDENTIAL_ID is : ${v_anypointCredentialID}"
-	echo "Mule Env yaml we are passing : ${v_muleEnv}"
 	echo "Region : ${v_region}"
 
 	withCredentials([usernamePassword(credentialsId: "${v_anypointCredentialID}",passwordVariable: 'ANYPOINT_PASSWORD',usernameVariable: 'ANYPOINT_USERNAME')])
