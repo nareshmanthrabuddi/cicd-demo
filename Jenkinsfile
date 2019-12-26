@@ -191,7 +191,16 @@ def UDF_ArtifactUploadToNexus()
 		v_version = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","version")
 		v_package = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","packaging")
 		String v_downloadFilePath = "${env.WORKSPACE}\\target\\${v_artifactId}-${v_version}-${v_package}.jar"	
-		def buildNumber = "${env.BUILD_NUMBER}"
+		def v_buildNumber = "${env.BUILD_NUMBER}"
+		v_nexusProtocol = "http"
+		v_nexusBaseURL = "${env.LOCAL_NEXUS_BASEURL}"
+
+		if(v_nexusBaseURL.contains("http://")) {
+			v_nexusBaseURL = v_nexusBaseURL.substring(7)
+		} else if(v_nexusBaseURL.contains("https://")) {
+			v_nexusBaseURL = v_nexusBaseURL.substring(8)
+		}		
+
 		
 		echo "###### NEXUS REPO DETAILS ######"
 		echo "Nexus base URL: ${env.LOCAL_NEXUS_BASEURL}"	
@@ -204,10 +213,10 @@ def UDF_ArtifactUploadToNexus()
 
 		nexusArtifactUploader(
 			nexusVersion: 'nexus3',
-			protocol: 'http',
-			nexusUrl: 'localhost:8081',
+			protocol: v_nexusProtocol,
+			nexusUrl: v_nexusBaseURL,
 			groupId: 'cicd-demo',
-			version: '1.0',
+			version: v_buildNumber,
 			repository: 'maven-releases',
 			credentialsId: '40860708-f898-4290-bf94-1b26ace6d908',
 			artifacts: [
