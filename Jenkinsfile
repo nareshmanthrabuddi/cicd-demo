@@ -193,7 +193,7 @@ def UDF_ArtifactUploadToNexus()
 		
 		nexusArtifactUploader(
 			nexusVersion: 'nexus3',
-			protocol: http,
+			protocol: 'http',
 			nexusUrl: 'localhost:8081',
 			groupId: 'cicd-demo',
 			version: '1.0',
