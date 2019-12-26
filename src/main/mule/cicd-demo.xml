@@ -5,8 +5,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="37b716c6-fce7-4ff1-afc0-ace2c6cb12c1" >
-		<http:listener-connection host="0.0.0.0" port="8181" />
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
 	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="1baac5b5-1a29-40eb-b35f-adfe8d4c505a" file="app.properties" />
 	<flow name="cicd-demoFlow" doc:id="4eb8edb7-7860-494a-9c30-bc8a927709f1" >
 		<http:listener doc:name="Listener" doc:id="baaf4d30-1f21-447b-be60-a378d0ec2081" config-ref="HTTP_Listener_config" path="/getData"/>
 		<set-variable value="Maruthi" doc:name="Set Variable" doc:id="5486a59c-7467-44e5-aa2b-4979f918abaf" variableName="str"/>
