@@ -36,6 +36,19 @@ node {
 	def v_package = ""
 	def v_downloadFilePath = ""
 
+	// nexus variables
+	def nexus_Protocol = ""
+	def nexus_BaseURL = ""		
+	def nexus_RepoName = ""		
+	def pom_GroupID = ""
+	def pom_ArtifactId = ""
+	def pom_Version = ""
+	def pom_Packaging = ""
+	def downloadDir = ""
+	def propertiesFilePath = ""
+	def downloadFilePath = ""
+
+
 	properties([
      parameters([
        choiceParam(
@@ -100,7 +113,10 @@ node {
 					
 				stage 'SonarQube Analysis'
 					UDF_ExecuteSonarQubeRules()
-						
+
+				stage 'ArtifactUploadToNexus'
+					UDF_ArtifactUploadToNexus()
+				
 				stage 'Notification'
 					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","success")
 
@@ -151,11 +167,75 @@ def UDF_ExecuteSonarQubeRules()
 {	
 	try{
 		echo 'SonarQube Rules Execution started'
-		bat 'mvn sonar:sonar'
+		//bat 'mvn sonar:sonar'
 		echo 'SonarQube Rules Execution Completed'	
 	} catch(error) {
 		throw(error)
 		SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
+	}
+}
+
+/*
+NEXUS ARTIFACT UPLOAD - STAGE
+This function provides functionality to upload the artifacts to the Nexus repository
+*/
+
+def UDF_ArtifactUploadToNexus() 
+{	
+
+	try{
+		echo "Artifact Copy to Nexus Started"
+		nexus_Protocol = "http"
+		nexus_BaseURL = "${env.LOCAL_NEXUS_BASEURL}"		
+		nexus_RepoName = UDF_Get_Nexus_RepoName("${params.ENVIRONMENTS}")		
+		pom_GroupID = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","groupId")
+		pom_ArtifactId = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","artifactId")
+		pom_Version = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","version")
+		pom_Packaging = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","packaging")
+		//def nexus_SearchURL = "${nexus_BaseURL}/service/rest/beta/search?repository=${nexus_RepoName}&group=${pom_GroupID}&name=${pom_ArtifactId}"	
+		downloadDir = "${env.JENKINS_HOME}\\CloudHub\\Downloads\\"+UDF_GetGitRepoName()	
+		
+		echo "###### NEXUS REPO DETAILS ######"
+		echo "Nexus base URL: ${env.LOCAL_NEXUS_BASEURL}"	
+		echo "nexus_RepoName: ${params.ENVIRONMENTS}"
+		echo "pom_GroupID: ${pom_GroupID}"
+		echo "pom_ArtifactId is : ${pom_ArtifactId}"
+		echo "pom_Version is : ${pom_Version}"
+		echo "pom_Packaging is : ${pom_Packaging}"
+		echo "downloadDir is : ${downloadDir}"
+	
+		String nexusRepoName = "${nexus_RepoName}/"
+		String targetZipName = "target/${pom_ArtifactId}-${pom_Version}-mule-application.jar"
+
+		echo "nexusRepoName is : ${nexusRepoName}"
+		echo "targetZipName is : ${targetZipName}"
+		
+		if(nexus_BaseURL.contains("http://")) {
+			nexus_BaseURL = nexus_BaseURL.substring(7)
+		} else if(nexus_BaseURL.contains("https://")) {
+			nexus_BaseURL = nexus_BaseURL.substring(8)
+		}
+		echo "nexus_BaseURL after substring is : ${nexus_BaseURL}"
+
+		nexusArtifactUploader(
+			nexusVersion: 'nexus3',
+			protocol: http,
+			nexusUrl: localhost:8081,
+			groupId: cicd-demo,
+			version: 1.0,
+			repository: maven-releases,
+			credentialsId: '40860708-f898-4290-bf94-1b26ace6d908',
+			artifacts: [
+				[artifactId: cicd-demo,
+				 classifier: 'debug',
+				 file: targetZipName,
+				 type: 'jar']
+			]
+		 )
+	    echo 'Artifact Copy to Nexus Completed'
+	}catch(error) {
+		throw(error)
+		SendEmail("","","Failed")
 	}
 }
 
