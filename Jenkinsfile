@@ -190,14 +190,15 @@ def UDF_ArtifactUploadToNexus()
 		v_artifactId = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","artifactId")
 		v_version = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","version")
 		v_package = UDF_GetPOMData("${env.WORKSPACE}/pom.xml","packaging")
-		String v_downloadFilePath = "${env.WORKSPACE}\\target\\${v_artifactId}-${v_version}-${v_package}.jar"	
-		def v_buildNumber = "${env.BUILD_NUMBER}"
+		v_downloadFilePath = "${env.WORKSPACE}\\target\\${v_artifactId}-${v_version}-${v_package}.jar"	
+		v_buildNumber = "${env.BUILD_NUMBER}"
 		v_nexusProtocol = "http"
 		v_nexusBaseURL = "localhost:8081"
 		v_nexusRelease = "nexus3"		
 		
-		echo "###### NEXUS REPO DETAILS ######"
-		echo "Build Number from pom  : ${v_buildNumber}"	
+		echo "###### NEXUS REPO DETAILS #########"
+
+		echo "Build Number : ${v_buildNumber}"	
 		echo "GroupID from pom : ${v_groupID}"
 		echo "ArtifactId from pom  is : ${v_artifactId}"
 		echo "Version from pom is : ${v_version}"
@@ -205,7 +206,7 @@ def UDF_ArtifactUploadToNexus()
 		echo "downloadDir is : ${v_downloadFilePath}"
 
 		nexusArtifactUploader(
-			nexusVersion: 'nexus3',
+			nexusVersion: v_nexusRelease,
 			protocol: v_nexusProtocol,
 			nexusUrl: v_nexusBaseURL,
 			groupId: v_groupID,
