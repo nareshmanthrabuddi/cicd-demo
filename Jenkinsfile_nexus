@@ -13,7 +13,7 @@ pipeline {
 	stages {
 	    stage('CI/CD Pipeline triggered') {		
 			steps {
-			   echo 'ION API Pipeline Started'
+			   echo 'CI/CD Pipeline Started'
 			}
 	    }
 	}
@@ -44,7 +44,7 @@ node {
             name: 'ENVIRONMENT'
        ),
        choiceParam(
-         choices: 'BUILD-PACKAGING-DEPLOY\nBUILD-PACKAGING',
+         choices: 'BUILD-MUNITS\nBUILD-MUNITS-SONAR\nBUILD-MUNITS-SONAR-RELEASE',
             description: 'Please select the Build Mechanism',
             name: 'BUILD_MECHANISM'
        ),
@@ -80,34 +80,52 @@ node {
 	   )
      ])
     ])
-	if(params.BUILD_MECHANISM == 'BUILD-PACKAGING') {
-		try{
-			stage 'Code Build & MUnits Execution'	
-				UDF_BuildSourceCode()
+	if(params.BUILD_MECHANISM == 'BUILD-MUNITS') {
+			try{
+				stage 'Code Build & MUnits Execution'	
+					UDF_BuildSourceCode()
+						
+				stage 'Notification'
+					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","success")
 					
-			stage 'Notification'
-				SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","success")
-				
-		} catch(error) {
-			throw(error)
-			SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
+			} catch(error) {
+				throw(error)
+				SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
 
-		}		
-	} else if(params.BUILD_MECHANISM == 'BUILD-PACKAGING-DEPLOY') {
-		try{
-			stage 'Code Build & Packaging'	
-				UDF_BuildSourceCode()
-				
-			stage 'Deploy To CloudHub'
-				UDF_DeployToCloudHub()
+			}		
+		} else if(params.BUILD_MECHANISM == 'BUILD-MUNITS-SONAR') {
+			try{
+				stage 'Code Build & MUnits Execution'	
+					UDF_BuildSourceCode()
+					
+				stage 'SonarQube Analysis'
+					UDF_ExecuteSonarQubeRules()
+						
+				stage 'Notification'
+					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","success")
 
-			stage 'Notification'
-				SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")	
-		} catch(error) {
-			throw(error)
-			SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
+			} catch(error) {
+				throw(error)
+				SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
+			}
+		} else if(params.BUILD_MECHANISM == 'BUILD-MUNITS-SONAR-RELEASE') {
+			try{
+				stage 'Code Build & MUnits Execution'	
+					UDF_BuildSourceCode()
+					
+				stage 'SonarQube Analysis'
+					UDF_ExecuteSonarQubeRules()
+
+				stage 'DeployToCloudHub'
+					UDF_DeployToCloudHub()
+
+				stage 'Notification'
+					SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")	
+			} catch(error) {
+				throw(error)
+				SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
+			}
 		}
-	}
 }
 
 /*
@@ -124,6 +142,23 @@ def UDF_BuildSourceCode()
 		SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
 	}
 }
+
+/*
+SONARQUBE - STAGE
+This function provides functionality to do the SONAR Analysis
+*/
+def UDF_ExecuteSonarQubeRules()
+{	
+	try{
+		echo 'SonarQube Rules Execution started'
+		bat 'mvn sonar:sonar'
+		echo 'SonarQube Rules Execution Completed'	
+	} catch(error) {
+		throw(error)
+		SendEmail("naresh.manthrabuddi@whishworks.com","naresh.manthrabuddi@whishworks.com","Failed")
+	}
+}
+   
 
 /*
 DEPLOY STAGE
