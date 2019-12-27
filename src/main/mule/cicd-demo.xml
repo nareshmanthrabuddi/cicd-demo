@@ -15,7 +15,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<set-variable value="CD" doc:name="Set Variable" doc:id="6a962608-e383-453b-be98-d31cc3ed43de" variableName="y"/>
 		<set-variable value="CM" doc:name="Set Variable" doc:id="a88a5f81-08bd-469c-a666-e9d439032b4e" variableName="z"/>
 		<set-variable value="DevOps" doc:name="Set Variable" doc:id="b2e8908d-2216-49b6-b55c-a113ce8d2496" variableName="p"/>
-		<set-payload value="### CI/CD Demo to Architects ###" doc:name="Set Payload" doc:id="47dd8b72-7bdb-427f-bf7f-06486d17ff3e" />
+		<set-payload value="### CI/CD Demo to Architects V1.0.0 ###" doc:name="Set Payload" doc:id="47dd8b72-7bdb-427f-bf7f-06486d17ff3e" />
 		<logger level="INFO" doc:name="Logger" doc:id="feef2044-e9b6-4150-93c4-18f495ddef5f" message="#[payload]"/>
 	</flow>
 </mule>
