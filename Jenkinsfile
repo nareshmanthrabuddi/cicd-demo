@@ -40,19 +40,14 @@ node {
 	properties([
      parameters([
        choiceParam(
-         choices: 'development\nSIT\nTEST\nPREPROD\nPROD',
-            description: 'Please select the ENVIRONMENT for Deployment',
-            name: 'ENVIRONMENT'
-       ),
-       choiceParam(
          choices: 'BUILD-MUNITS\nBUILD-MUNITS-SONAR\nBUILD-MUNITS-SONAR-RELEASE\nBUILD-MUNITS-SONAR-RELEASE-DEPLOY',
             description: 'Please select the Build Mechanism',
             name: 'BUILD_MECHANISM'
        ),
        choiceParam(
-         choices: '4.2.0\n4.2.1\n4.2.2\n4.1.5',
-            description: 'Please select mule runtime version for Deployment?',
-            name: 'MULE_RUNTIME_VERSION'
+         choices: 'development\nSIT\nTEST\nPREPROD\nPROD',
+            description: 'Please select the ENVIRONMENT for Deployment',
+            name: 'ENVIRONMENT'
        ),
        choiceParam(
          choices: '(default:1)\n2\n3\n4\n5\n6\n7\n8',
@@ -74,6 +69,11 @@ node {
 		   defaultValue: 'cicd-demo', 
 		   description: 'Please enter the application name for CloudHub Deployment?'
 	   ),
+       choiceParam(
+         choices: '4.2.0\n4.2.1\n4.2.2\n4.1.5',
+            description: 'Please select mule runtime version for Deployment?',
+            name: 'MULE_RUNTIME_VERSION'
+       ),
        string(
 		   name: 'ANYPOINT_ORGANIZATION', 
 		   defaultValue: 'LnD', 
