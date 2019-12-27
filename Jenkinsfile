@@ -204,6 +204,7 @@ def UDF_ArtifactUploadToNexus()
 		v_nexusProtocol = "http"
 		v_nexusBaseURL = "localhost:8081"
 		v_nexusRelease = "nexus3"		
+		v_nexusRepository = "ww-releases"		
 		
 		echo "###### NEXUS REPO DETAILS #########"
 
@@ -220,7 +221,7 @@ def UDF_ArtifactUploadToNexus()
 			nexusUrl: v_nexusBaseURL,
 			groupId: v_groupID,
 			version: v_buildNumber,
-			repository: 'maven-releases',
+			repository: v_nexusRepository,
 			credentialsId: '40860708-f898-4290-bf94-1b26ace6d908',
 			artifacts: [
 				[artifactId: v_artifactId,
