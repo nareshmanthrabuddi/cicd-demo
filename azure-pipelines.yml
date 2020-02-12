@@ -19,4 +19,4 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'clean package'
+    goals: 'clean package deploy -DmuleDeploy -DskipTests=true -Danypoint.username=naresh_m -Danypoint.password=Whishworks12!@ -Denvironment=PROD -DbusinessGroup=LnD -Dworkers=1 -DworkerType=Micro -DmuleVersion=4.2.0 -DapplicationName=cicd-demo'
